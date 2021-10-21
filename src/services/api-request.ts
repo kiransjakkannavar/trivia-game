@@ -6,9 +6,9 @@ import { BaseAxiosInstance } from './axios';
 export const apiRequest = async function (options:any) {
   const onSuccess = function (response:any) {
     if (response && response.status === 'ok') {
-      return Promise.resolve(response);
+      return Promise.resolve(response.data);
     } else {
-      return Promise.resolve(response);
+      return Promise.resolve(response.data);
     }
   };
 
@@ -18,10 +18,8 @@ export const apiRequest = async function (options:any) {
 
   try {
     const response = await BaseAxiosInstance(options);
-    console.log('******response pass*****', response);
     return onSuccess(response);
   } catch (error:any) {
-    console.log('******response fail*****', error.response);
     return onError(error);
   }
 };
