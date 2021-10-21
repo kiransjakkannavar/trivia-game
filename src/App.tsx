@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import QuestionCard from './components/QuestionCard';
+import {randomQuestionService} from './services';
 
-function App() {
+const App = () => {
+  const [question, setQuestion] = useState('');
+  const [questionNumber, setQuestionNumber] = useState(0);
+  const [answer, setAnswer] = useState('');
+  const [userAnswer, setUserAnswer] = useState(''); 
+  
+  useEffect(() => {
+   startQuiz();
+  }, [])
+
+  const startQuiz = async() => {
+    randomQuestionService.getRandomQuestions(onSuccess,onFailure)
+  }
+
+  const checkAnswer = () => {
+
+  }
+
+  const onSuccess = (response:any) => {
+    setQuestion(response?.data?.question);
+    setAnswer(response?.data?.answer)
+  }
+
+  const onFailure = (error:any) => {
+    alert(`${error?.message}`)
+  }
+
+  const submitAnswer = () => {
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Trivia Quiz</h1>
+      <button className="start" onClick={startQuiz}>Start</button>
+      <p>Loading Question...</p>
+      <QuestionCard
+        questionNumber={questionNumber + 1}
+        question={question}
+      />
+      <input type="text" />
+      <button className="submit" onClick={submitAnswer}>Submit</button>
     </div>
-  );
+  )
 }
 
 export default App;
